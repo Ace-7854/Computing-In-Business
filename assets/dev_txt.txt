@@ -1,21 +1,21 @@
 DepartmentID {
-    emailID Integer,
-    userID Integer,
-    departmentID Integer,
-    emailaddress varchar(50)
+    emailID INTEGER,
+    userID INTEGER,
+    departmentID INTEGER,
+    emailaddress VARCHAR(50)
 }
 
 Department {
-    departmentID Integer,
-    name varchar(50)
+    departmentID INTEGER,
+    name VARCHAR(50)
 }
 
 User {
-    userID Integer,
-    name varchar(50),
-    emailaddress varchar(50),
-    alphaNumeric varchar(50),
-    currentLineManager varchar(50)
-    departmentLineManager varchar(50),
-    departmentID Integer
+    userID INTEGER,
+    name VARCHAR(50),
+    emailaddress VARCHAR(50),
+    alphaNumeric VARCHAR(50),
+    currentLineManager VARCHAR(50)
+    departmentLineManager VARCHAR(50),
+    departmentID INTEGER,
 }
