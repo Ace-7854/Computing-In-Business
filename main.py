@@ -9,8 +9,11 @@ def display_all_items(records):
 
 def main():
     csv = cls_csv(get_file_path())
-
     display_all_items(csv.read_csv())
+
+    oracle_database = database_manager(get_conn_string())
+
+    oracle_database.close_connection()
     
 """
 index 0: Full Name
