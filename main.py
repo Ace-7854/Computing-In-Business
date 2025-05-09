@@ -1,5 +1,5 @@
 from csv_module import cls_csv
-from database_module import database_manager
+from database_module import database_manager, table, new_table
 from env_module import get_conn_string, get_file_path
 
 def display_all_items(records):
