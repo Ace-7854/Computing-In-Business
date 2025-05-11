@@ -13,7 +13,26 @@ def main():
 
     oracle_database = database_manager(get_conn_string())
 
+    tbls = oracle_database.get_all_tables()
+
+    dept_tbl = False
+    dept_em_tbl = False
+    user_tbl = False
+
+    for tbl in tbls:
+        if tbl.lower() == "departmentemail_tbl":
+            dept_em_tbl = True
+        elif tbl.lower() == "user_tbl":
+            user_tbl = True
+        elif tbl.lower() == "department_tbl":
+            dept_tbl = True
     
+    if not dept_tbl:
+        oracle_database.create_tbl_dept()
+    if not dept_em_tbl:
+        oracle_database.create_tbl_dept_email()
+    if not user_tbl:
+        oracle_database.create_tbl_user()    
 
     oracle_database.close_connection()
     

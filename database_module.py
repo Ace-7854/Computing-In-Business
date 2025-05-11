@@ -46,7 +46,7 @@ class database_manager:
         finally:
             cursor.close()
 
-    def create_tbl_Dept_email(self):
+    def create_tbl_dept_email(self):
         query = "CREATE TABLE DepartmentEmail_tbl (" \
         "emailID INTEGER," \
         "userID INTEGER," \
@@ -63,7 +63,7 @@ class database_manager:
             print(f"✅ Table successfully created")
         except Exception as e:
             self.__conn.rollback()
-            print("❌ Error in create_tbl_dept_email")
+            print(f"❌ Error in create_tbl_dept_emailm {e}")
         finally:
             cursor.close()
 
