@@ -5,13 +5,15 @@ from env_module import get_conn_string, get_file_path
 def display_all_items(records):
     for record in records:
         print(record)
-        print('\n')
+        #
 
 def main():
     csv = cls_csv(get_file_path())
     display_all_items(csv.read_csv())
 
     oracle_database = database_manager(get_conn_string())
+
+    
 
     oracle_database.close_connection()
     

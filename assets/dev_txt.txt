@@ -1,16 +1,19 @@
-DepartmentID {
+CREATE TABLE DepartmentEmail_tbl {
     emailID INTEGER,
     userID INTEGER,
     departmentID INTEGER,
-    emailaddress VARCHAR(50)
+    emailaddress VARCHAR(50),
+    PRIMARY KEY (emailID, userID),
+    FORIEGN KEY (userID) REFERENCES (User_tbl)
 }
 
-Department {
+CREATE TABLE Department_tbl {
     departmentID INTEGER,
-    name VARCHAR(50)
+    name VARCHAR(50),
+    PRIMARY KEY (departmentID)
 }
 
-User {
+CREATE TABLE User_tbl {
     userID INTEGER,
     name VARCHAR(50),
     emailaddress VARCHAR(50),
@@ -18,4 +21,6 @@ User {
     currentLineManager VARCHAR(50)
     departmentLineManager VARCHAR(50),
     departmentID INTEGER,
+    PRIMARY KEY (userID, departmentID),
+    FORIEGN KEY (departmentID) REFERENCES (Department_tbl)
 }

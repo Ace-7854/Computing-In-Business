@@ -6,6 +6,68 @@ class database_manager:
         self.__conn = oracledb.connect(conn_str)
         print("✅ Database connection established.")
 
+    def create_tbl_dept(self):
+        query = "CREATE TABLE Department_tbl (" \
+        "departmentID INTEGER," \
+        "dept_name VARCHAR(50), " \
+        "PRIMARY KEY (departmentID)" \
+        ")"
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print(f"✅ Table successfully created")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ Error in create_tbl_dept: {e}")
+        finally:
+            cursor.close()
+
+    def create_tbl_user(self):
+        query = "CREATE TABLE User_tbl (" \
+        "userID INTEGER," \
+        "name_user VARCHER(50)," \
+        "emailAddress VARCHAR(50)," \
+        "alphaNumeric VARCHER(50)," \
+        "currentLineManager VARCHAR(50)," \
+        "departmentLineManager VARCHAR(50)," \
+        "departmentID INTEGER," \
+        "PRIMARY KEY (userID, departmentID)," \
+        "FORIEGN KEY (departmentID) REFERENCES (Department_tbl)" \
+        ")"
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print(f"✅ Table successfully created")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ Error in create_tbl_user: {e}")
+        finally:
+            cursor.close()
+
+    def create_tbl_Dept_email(self):
+        query = "CREATE TABLE DepartmentEmail_tbl (" \
+        "emailID INTEGER," \
+        "userID INTEGER," \
+        "departmentID INTEGER," \
+        "emailAddress VARCHAR(50)," \
+        "PRIMARY KEY (emailID, userID, departmentID)," \
+        "FORIEGN KEY (departmentID) REFERENCES (Department_tbl)," \
+        "FORIEGN KEY (userID) REFERENCES (User_tbl)" \
+        ")"
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print(f"✅ Table successfully created")
+        except Exception as e:
+            self.__conn.rollback()
+            print("❌ Error in create_tbl_dept_email")
+        finally:
+            cursor.close()
+
+
     def get_data(self, table):
         lst_of_rec = []
         query = f"SELECT * FROM {table}"
