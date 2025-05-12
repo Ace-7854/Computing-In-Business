@@ -4,7 +4,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for sessions
 
 # Dummy user for demo
-users = {'admin': 'password123'}
+users = {'Tyler': 'password123'}
 
 @app.route('/')
 def home():
@@ -17,15 +17,15 @@ def login():
         password = request.form['password']
         if username in users and users[username] == password:
             session['user'] = username
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard_user'))
         return "Invalid credentials!"
     return render_template('login.html')
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/dashboard_user')
+def dashboard_user():
     if 'user' not in session:
         return redirect(url_for('login'))
-    return render_template('dashboard.html', user=session['user'])
+    return render_template('dashboard_user.html', user=session['user'])
 
 @app.route('/logout')
 def logout():
