@@ -6,15 +6,15 @@ Dear \[Referrer’s Name],
 
 Thank you for submitting a referral to the Occupational Health service.
 
-We confirm that your referral for \[Employee Full Name] has been successfully received on \[Date/Time]. The Occupational Health team will now begin processing the referral and will be in touch if further information is required.
+We confirm that your referral for [Employee Full Name] has been successfully received on \[Date/Time]. The Occupational Health team will now begin processing the referral and will be in touch if further information is required.
 
 Referral Details:
 
-* Referrer Name: \[Referrer’s Full Name]
-* Employee Name: \[Employee’s Full Name]
-* Employee Department/Location: \[Department/Location]
-* Reason for Referral: \[Brief Summary or Category]
-* Preferred Appointment Method: \[In-person / Telephone / Video]
+* Referrer Name: [Referrer’s Full Name]
+* Employee Name: [Employee’s Full Name]
+* Employee Department/Location: [Department/Location]
+* Reason for Referral: [Brief Summary or Category]
+* Preferred Appointment Method: Online
 
 You will receive an update once the referral has been reviewed and the appointment is scheduled.
 
@@ -22,5 +22,5 @@ If you have any questions or need to make changes to the referral, please contac
 
 Thank you,
 Occupational Health Services
-\[Organization Name]
-\[Email Footer: Phone, Email, Address, Website]
+BAE Systems, Occupational Health System
+
