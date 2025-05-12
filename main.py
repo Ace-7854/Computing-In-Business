@@ -1,17 +1,13 @@
 from csv_module import cls_csv
 from database_module import database_manager, table, new_table
 from env_module import get_conn_string, get_file_path
+from email_module import *
 
 def display_all_items(records):
     for record in records:
         print(record)
 
-def main():
-    csv = cls_csv(get_file_path())
-    display_all_items(csv.read_csv())
-
-    oracle_database = database_manager(get_conn_string())
-
+def table_check(oracle_database):
     tbls = oracle_database.get_all_tables()
 
     dept_tbl = False
@@ -33,7 +29,18 @@ def main():
     if not user_tbl:
         oracle_database.create_tbl_user()    
 
-    oracle_database.drop_tbl()
+    for tbl in tbls:
+        if tbl.lower() != "departmentemail_tbl" and tbl.lower() != "user_tbl" and tbl.lower() != "departmentemail_tbl":
+            oracle_database.drop_tbl(tbl)
+
+def main():
+    csv = cls_csv(get_file_path())
+    display_all_items(csv.read_csv())
+
+    oracle_database = database_manager(get_conn_string())
+
+
+
     oracle_database.close_connection()
     
 """
