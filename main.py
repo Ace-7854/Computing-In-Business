@@ -5,7 +5,6 @@ from env_module import get_conn_string, get_file_path
 def display_all_items(records):
     for record in records:
         print(record)
-        #
 
 def main():
     csv = cls_csv(get_file_path())
@@ -34,6 +33,7 @@ def main():
     if not user_tbl:
         oracle_database.create_tbl_user()    
 
+    oracle_database.drop_tbl()
     oracle_database.close_connection()
     
 """

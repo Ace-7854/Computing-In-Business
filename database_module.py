@@ -26,15 +26,16 @@ class database_manager:
     def create_tbl_user(self):
         query = "CREATE TABLE User_tbl (" \
         "userID INTEGER," \
-        "name_user VARCHER(50)," \
+        "name_user VARCHAR(50)," \
         "emailAddress VARCHAR(50)," \
-        "alphaNumeric VARCHER(50)," \
+        "alphaNumeric VARCHAR(50)," \
         "currentLineManager VARCHAR(50)," \
         "departmentLineManager VARCHAR(50)," \
         "departmentID INTEGER," \
         "PRIMARY KEY (userID, departmentID)," \
-        "FORIEGN KEY (departmentID) REFERENCES (Department_tbl)" \
+        "FOREIGN KEY (departmentID) REFERENCES Department_tbl(departmentID)" \
         ")"
+
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
@@ -47,15 +48,17 @@ class database_manager:
             cursor.close()
 
     def create_tbl_dept_email(self):
-        query = "CREATE TABLE DepartmentEmail_tbl (" \
-        "emailID INTEGER," \
-        "userID INTEGER," \
-        "departmentID INTEGER," \
-        "emailAddress VARCHAR(50)," \
-        "PRIMARY KEY (emailID, userID, departmentID)," \
-        "FORIEGN KEY (departmentID) REFERENCES (Department_tbl)," \
-        "FORIEGN KEY (userID) REFERENCES (User_tbl)" \
-        ")"
+        query = """
+        CREATE TABLE DepartmentEmail_tbl (
+        emailID INTEGER,
+        userID INTEGER,
+        departmentID INTEGER,
+        emailAddress VARCHAR(50),
+        PRIMARY KEY (emailID),
+        FOREIGN KEY (departmentID) REFERENCES Department_tbl(departmentID),
+        FOREIGN KEY (userID, departmentID) REFERENCES User_tbl(userID, departmentID)
+        )
+        """
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
@@ -63,7 +66,7 @@ class database_manager:
             print(f"✅ Table successfully created")
         except Exception as e:
             self.__conn.rollback()
-            print(f"❌ Error in create_tbl_dept_emailm {e}")
+            print(f"❌ Error in create_tbl_dept_email {e}")
         finally:
             cursor.close()
 
@@ -251,7 +254,7 @@ class database_manager:
             cursor.close()
         return fields
 
-    def drop_tbl(self, table_name):
+    def drop_tbl(self, table_name:str):
         query = f"DROP TABLE {table_name}"
         cursor = self.__conn.cursor()
         try:
