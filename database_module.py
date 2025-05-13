@@ -77,6 +77,7 @@ class database_manager:
         userID INTEGER,
         departmentID INTEGER,
         emailAddress VARCHAR(50),
+        accessControl INTEGER,
         PRIMARY KEY (emailID),
         FOREIGN KEY (departmentID) REFERENCES Department_tbl(departmentID),
         FOREIGN KEY (userID, departmentID) REFERENCES User_tbl(userID, departmentID)

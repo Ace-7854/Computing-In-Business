@@ -36,3 +36,22 @@ CREATE Table Referral_tbl {
     PRIMARY KEY (ReferralID),
     FORIEGN KEY (userID) REFERENCES User_tbl(userID)
 }
+
+
+
+
+## Notes 
+- dept status
+- tracking
+- connection to external providers
+- level of service they need
+- open and closed notes
+- attachments, quotes, and outcome cost
+- report
+
+## user
+- limitted version
+    - thier own referrals
+    - status of made referrals
+    - reference ID 
+    
