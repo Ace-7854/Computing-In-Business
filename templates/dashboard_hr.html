@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
-         <link rel="stylesheet" href="/static/style.css">
+    <title>HR Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <h2>Welcome, {{ user }}</h2>
     <p>Referral Progress: {{ complete }} out of {{ total }}</p>
-
-    <div class="progress-container">
-        <div class="progress-bar">{{ progress }}%</div>
-    </div>
 
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>

@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from app_logic import *
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for sessions
 
 # Dummy user for demo
-users = {'Tyler': 'password123'}
+users = {'admin': 'password123'}
 
 @app.route('/')
 def home():
@@ -15,9 +16,13 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username in users and users[username] == password:
+
+        if username in users and users[username] == password and username == 'admin': #determines the dashboard being POST-ed
             session['user'] = username
             return redirect(url_for('dashboard_user'))
+        elif username in users and users[username] == password and username == 'hr': #if they are a part of hr
+            session['user'] = username
+            return redirect(url_for('dashboard_hr'))
         return "Invalid credentials!"
     return render_template('login.html')
 
@@ -31,6 +36,11 @@ def dashboard_user():
 def logout():
     session.pop('user', None)
     return redirect(url_for('login'))
+
+@app.route('/dashboard_hr')
+def dashboard_hr():
+    if 'user' not in session:
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True) 
