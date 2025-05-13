@@ -6,21 +6,6 @@ body {
 input { 
     margin-bottom: 10px; 
 }
-.progress-container {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 25px;
-    margin: 20px 0;
-}
-.progress-bar {
-    height: 30px;
-    width: 40%;
-    background-color: #4CAF50;
-    border-radius: 25px;
-    text-align: center;
-    color: white;
-    line-height: 30px;
-}
 .LGD{
     
     position: absolute;
