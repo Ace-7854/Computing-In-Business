@@ -1,44 +1,32 @@
-CREATE TABLE DepartmentEmail_tbl {
-    emailID INTEGER,
-    userID INTEGER,
-    departmentID INTEGER,
-    emailaddress VARCHAR(50),
-    PRIMARY KEY (emailID, userID),
-    FORIEGN KEY (userID) REFERENCES (User_tbl)
-}
+CREATE TABLE Department_tbl(
+    DepartmentID INTEGER,
+    Department_name VARCHAR(50),
+    Department_email VARCHAR(50),
+    PRIMARY KEY(DepartmentID)
+)
 
-CREATE TABLE Department_tbl {
-    departmentID INTEGER,
-    dept_name VARCHAR(50),
-    PRIMARY KEY (departmentID)
-}
+CREATE TABLE User_tbl(
+    UserID INTEGER,
+    full_name VARCHAR(50),
+    email VARCHAR(50),
+    password VARCHAR(50),
+    DepartmentID INTEGER,
+    PRIMARY KEY (UserID),
+    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+)
 
-CREATE TABLE User_tbl {
-    userID INTEGER,
-    user_name VARCHAR(50),
-    emailaddress VARCHAR(50),
-    alphaNumeric VARCHAR(50),
-    currentLineManager VARCHAR(50)
-    departmentLineManager VARCHAR(50),
-    departmentID INTEGER,
-    PRIMARY KEY (userID, departmentID),
-    FORIEGN KEY (departmentID) REFERENCES (Department_tbl)
-}
-
-CREATE Table Referral_tbl {
-    ReferralID INTEGER, 
-    userID INTEGER,
-    Key_sub VARCHAR(50),
-    User_Notes VARCHAR(50),
-    Hr_Notes VARCHAR(50),
-    Date VARCHAR(50),
-    ref_stage INTEGER,
+CREATE TABLE Referral_tbl(
+    ReferralID INTEGER,
+    UserID INTEGER,
+    DepartmentID INTEGER,
+    Referral_subject INTEGER,
+    User_notes VARCHAR(50),
+    hr_notes VARCHAR(50),
+    confidential INTEGER,
     PRIMARY KEY (ReferralID),
-    FORIEGN KEY (userID) REFERENCES User_tbl(userID)
-}
-
-
-
+    FORIEGN KEY (UserID) REFERENCES User_tbl(UserID),
+    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+)
 
 ## Notes 
 - dept status

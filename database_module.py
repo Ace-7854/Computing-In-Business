@@ -6,94 +6,74 @@ class database_manager:
         self.__conn = oracledb.connect(conn_str)
         print("✅ Database connection established.")
 
-    def create_tbl_referral(self):
-        query = """CREATE Table Referral_tbl {
-    ReferralID INTEGER, 
-    userID INTEGER,
-    Key_sub VARCHAR(50),
-    User_Notes VARCHAR(50),
-    Hr_Notes VARCHAR(50),
-    Date VARCHAR(50),
-    ref_stage INTEGER,
-    PRIMARY KEY (ReferralID),
-    FORIEGN KEY (userID) REFERENCES User_tbl(userID)
-    }"""
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(query)
-            self.__conn.commit()
-            print("✅ Table successfully Created")
-        except Exception as e:
-            self.__conn.rollback()
-            print(f"❌ Error in create_tbl_referral: {e}")
-        finally:
-            cursor.close()
-
-    def create_tbl_dept(self):
-        query = "CREATE TABLE Department_tbl (" \
-        "departmentID INTEGER," \
-        "dept_name VARCHAR(50), " \
-        "PRIMARY KEY (departmentID)" \
-        ")"
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(query)
-            self.__conn.commit()
-            print(f"✅ Table successfully created")
-        except Exception as e:
-            self.__conn.rollback()
-            print(f"❌ Error in create_tbl_dept: {e}")
-        finally:
-            cursor.close()
-
-    def create_tbl_user(self):
-        query = "CREATE TABLE User_tbl (" \
-        "userID INTEGER," \
-        "name_user VARCHAR(50)," \
-        "emailAddress VARCHAR(50)," \
-        "alphaNumeric VARCHAR(50)," \
-        "currentLineManager VARCHAR(50)," \
-        "departmentLineManager VARCHAR(50)," \
-        "departmentID INTEGER," \
-        "PRIMARY KEY (userID, departmentID)," \
-        "FOREIGN KEY (departmentID) REFERENCES Department_tbl(departmentID)" \
-        ")"
-
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(query)
-            self.__conn.commit()
-            print(f"✅ Table successfully created")
-        except Exception as e:
-            self.__conn.rollback()
-            print(f"❌ Error in create_tbl_user: {e}")
-        finally:
-            cursor.close()
-
-    def create_tbl_dept_email(self):
+    def create_department(self):
         query = """
-        CREATE TABLE DepartmentEmail_tbl (
-        emailID INTEGER,
-        userID INTEGER,
-        departmentID INTEGER,
-        emailAddress VARCHAR(50),
-        accessControl INTEGER,
-        PRIMARY KEY (emailID),
-        FOREIGN KEY (departmentID) REFERENCES Department_tbl(departmentID),
-        FOREIGN KEY (userID, departmentID) REFERENCES User_tbl(userID, departmentID)
-        )
-        """
+CREATE TABLE Department_tbl(
+    DepartmentID INTEGER,
+    Department_name VARCHAR(50),
+    Department_email VARCHAR(50),
+    PRIMARY KEY(DepartmentID)
+)
+"""
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
             self.__conn.commit()
-            print(f"✅ Table successfully created")
+            print("✅ Department Table has been successfully made!")
         except Exception as e:
             self.__conn.rollback()
-            print(f"❌ Error in create_tbl_dept_email {e}")
+            print(f"❌ Department Table failed: {e}")
         finally:
             cursor.close()
 
+    def create_user(self):
+        query = """
+CREATE TABLE User_tbl(
+    UserID INTEGER,
+    full_name VARCHAR(50),
+    email VARCHAR(50),
+    password VARCHAR(50),
+    DepartmentID INTEGER,
+    PRIMARY KEY (UserID),
+    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+)
+"""
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print("✅ User Table has been successfully made!")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ User Table failed: {e}")
+        finally:
+            cursor.close()
+
+    def create_referral(self):
+        query = """
+CREATE TABLE Referral_tbl(
+    ReferralID INTEGER,
+    UserID INTEGER,
+    DepartmentID INTEGER,
+    Referral_subject INTEGER,
+    User_notes VARCHAR(50),
+    hr_notes VARCHAR(50),
+    confidential INTEGER,
+    PRIMARY KEY (ReferralID),
+    FORIEGN KEY (UserID) REFERENCES User_tbl(UserID),
+    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+)
+"""
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print("✅ Referral Table has been successfully made!")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ Referral Table failed: {e}")
+        finally:
+            cursor.close()
 
     def get_data(self, table):
         lst_of_rec = []

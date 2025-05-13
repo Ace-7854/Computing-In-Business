@@ -11,23 +11,23 @@ def table_check(oracle_database:database_manager):
     tbls = oracle_database.get_all_tables()
 
     dept_tbl = False
-    dept_em_tbl = False
+    referral_tbl = False
     user_tbl = False
 
     for tbl in tbls:
-        if tbl.lower() == "departmentemail_tbl":
-            dept_em_tbl = True
+        if tbl.lower() == "referral_tbl":
+            referral_tbl = True
         elif tbl.lower() == "user_tbl":
             user_tbl = True
         elif tbl.lower() == "department_tbl":
             dept_tbl = True
     
     if not dept_tbl:
-        oracle_database.create_tbl_dept()
-    if not dept_em_tbl:
-        oracle_database.create_tbl_dept_email()
+        oracle_database.create_user()
+    if not referral_tbl:
+        oracle_database.create_department()
     if not user_tbl:
-        oracle_database.create_tbl_user()    
+        oracle_database.create_referral()
 
     for tbl in tbls:
         if tbl.lower() != "departmentemail_tbl" and tbl.lower() != "user_tbl" and tbl.lower() != "department_tbl":
