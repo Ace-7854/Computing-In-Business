@@ -53,8 +53,7 @@ def referral_creation():
         referral_subject = request.form.get('user_referral_subject')
         referral_notes = request.form.get('user_notes')
 
-
-
+        
     return render_template('referral_creation.html', user=session['user'])
 
 @app.route('/view_referral')

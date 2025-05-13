@@ -15,22 +15,20 @@ class email_manager:
     def get_email_submission(self):
         pass
 
-    def get_hr_conf(self):
+    def get_hr_conf(self, name, dept, ref_reason):
         subject = """Referral Submission Confirmation – Occupational Health"""
         
-        body = """\
-        Dear John Smith,
+        body = f"""\
+        Dear {name},
         
         Thank you for submitting a referral to the Occupational Health service.
         
         We confirm that your referral for Jane Doe has been successfully received on 12 May 2025 at 10:15 AM. The Occupational Health team will now begin processing the referral and will be in touch if further information is required.
         
         Referral Details:
-        - Referrer Name: John Smith
-        - Employee Name: Jane Doe
-        - Department: Finance
-        - Reason for Referral: Long-term sickness absence
-        - Preferred Appointment Method: Video call
+        - Employee Name: {name}
+        - Department: {dept}
+        - Reason for Referral: {ref_reason}
         
         You will receive an update once the referral has been reviewed and the appointment is scheduled.
         
@@ -38,7 +36,7 @@ class email_manager:
         
         Thank you,  
         Occupational Health Services  
-        Example Ltd
+        BAE Systems
         """
         self.send_email(subject, body, self.reciever)
 
