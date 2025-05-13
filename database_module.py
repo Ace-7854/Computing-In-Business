@@ -6,6 +6,29 @@ class database_manager:
         self.__conn = oracledb.connect(conn_str)
         print("✅ Database connection established.")
 
+    def create_tbl_referral(self):
+        query = """CREATE Table Referral_tbl {
+    ReferralID INTEGER, 
+    userID INTEGER,
+    Key_sub VARCHAR(50),
+    User_Notes VARCHAR(50),
+    Hr_Notes VARCHAR(50),
+    Date VARCHAR(50),
+    ref_stage INTEGER,
+    PRIMARY KEY (ReferralID),
+    FORIEGN KEY (userID) REFERENCES User_tbl(userID)
+    }"""
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print("✅ Table successfully Created")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ Error in create_tbl_referral: {e}")
+        finally:
+            cursor.close()
+
     def create_tbl_dept(self):
         query = "CREATE TABLE Department_tbl (" \
         "departmentID INTEGER," \

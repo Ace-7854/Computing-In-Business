@@ -5,7 +5,8 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for sessions
 
 # Dummy user for demo
-users = {'admin': 'password123'}
+users = {'admin': 'password123',
+         'hr':'password123'}
 
 @app.route('/')
 def home():
@@ -41,6 +42,7 @@ def logout():
 def dashboard_hr():
     if 'user' not in session:
         return redirect(url_for('login'))
+    return render_template('dashboard_hr.html', user=session['user'])
 
 if __name__ == '__main__':
     app.run(debug=True) 

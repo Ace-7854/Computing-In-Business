@@ -24,3 +24,15 @@ CREATE TABLE User_tbl {
     PRIMARY KEY (userID, departmentID),
     FORIEGN KEY (departmentID) REFERENCES (Department_tbl)
 }
+
+CREATE Table Referral_tbl {
+    ReferralID INTEGER, 
+    userID INTEGER,
+    Key_sub VARCHAR(50),
+    User_Notes VARCHAR(50),
+    Hr_Notes VARCHAR(50),
+    Date VARCHAR(50),
+    ref_stage INTEGER,
+    PRIMARY KEY (ReferralID),
+    FORIEGN KEY (userID) REFERENCES User_tbl(userID)
+}
