@@ -44,5 +44,17 @@ def dashboard_hr():
         return redirect(url_for('login'))
     return render_template('dashboard_hr.html', user=session['user'])
 
+@app.route('/referral_creation')
+def referral_creation():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return render_template('referral_creation.html', user=session['user'])
+
+@app.route('/view_referral')
+def view_referral():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return render_template('view_referral.html', user=session['user'])
+
 if __name__ == '__main__':
     app.run(debug=True) 

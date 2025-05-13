@@ -6,3 +6,18 @@ body {
 input { 
     margin-bottom: 10px; 
 }
+.navbar {
+    background-color: #1f1f1f;
+    padding: 10px 20px;
+}
+
+.navbar a {
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #ff5252;
+}
