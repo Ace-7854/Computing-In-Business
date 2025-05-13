@@ -7,9 +7,9 @@
 <body>
      <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">AceInc</a>
+            <a class="navbar-brand" href="index.html">BAE Systems Occupationial Health Systems</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon">---</span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -17,6 +17,10 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout')}}">Make a Referral</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Check Referral history</a></li>
                 </ul>
+            </div>
+        </div>
+     </nav>
+
     <h2>Welcome, {{ user }}</h2>
     <p>Referral Progress: {{ complete }} out of {{ total }}</p>
 

@@ -9,13 +9,13 @@ CREATE TABLE DepartmentEmail_tbl {
 
 CREATE TABLE Department_tbl {
     departmentID INTEGER,
-    name VARCHAR(50),
+    dept_name VARCHAR(50),
     PRIMARY KEY (departmentID)
 }
 
 CREATE TABLE User_tbl {
     userID INTEGER,
-    name VARCHAR(50),
+    user_name VARCHAR(50),
     emailaddress VARCHAR(50),
     alphaNumeric VARCHAR(50),
     currentLineManager VARCHAR(50)
