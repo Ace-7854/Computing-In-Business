@@ -39,7 +39,8 @@ def main():
 
     oracle_database = database_manager(get_conn_string())
     # table_check(oracle_database)
-    # email_sender = email_manager(get_reciever())
+    email_sender = email_manager(get_reciever())
+    email_sender.get_hr_conf()
 
     
 

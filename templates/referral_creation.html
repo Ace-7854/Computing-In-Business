@@ -16,14 +16,27 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('')}}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout')}}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout')}}">Make a Referral</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Check Referral history</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"></a></li>
                 </ul>
             </div>
-    <h2>Welcome, {{ user }}</h2>
-    <p>Referral Progress: {{ complete }} out of {{ total }}</p>
-
-    <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="content">
+        <form method="POST" action="{{ url_for('referral_creation') }}">">
+    <div class="mb-3">
+    <label for="user_referral_subject" class="form-label">Key Referrel</label>
+    <input type="text" class="form-control" id="user_referral_subject" name="user_referral_subject" placeholder="I need a new chair">
+    </div>
+    <div class="mb-3">
+    <label for="user_notes" class="form-label">Notes</label>
+    <textarea class="form-control" id="user_notes" name="user_notes" rows="3"></textarea>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+    </div>
+    
 </body>
 </html>

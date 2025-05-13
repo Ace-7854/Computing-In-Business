@@ -19,27 +19,27 @@ class email_manager:
         subject = """Referral Submission Confirmation – Occupational Health"""
         
         body = """\
-Dear John Smith,
-
-Thank you for submitting a referral to the Occupational Health service.
-
-We confirm that your referral for Jane Doe has been successfully received on 12 May 2025 at 10:15 AM. The Occupational Health team will now begin processing the referral and will be in touch if further information is required.
-
-Referral Details:
-- Referrer Name: John Smith
-- Employee Name: Jane Doe
-- Department: Finance
-- Reason for Referral: Long-term sickness absence
-- Preferred Appointment Method: Video call
-
-You will receive an update once the referral has been reviewed and the appointment is scheduled.
-
-If you have any questions or need to make changes to the referral, please contact the Occupational Health team at ohsupport@example.com quoting the reference number REF-001245.
-
-Thank you,  
-Occupational Health Services  
-Example Ltd
-"""
+        Dear John Smith,
+        
+        Thank you for submitting a referral to the Occupational Health service.
+        
+        We confirm that your referral for Jane Doe has been successfully received on 12 May 2025 at 10:15 AM. The Occupational Health team will now begin processing the referral and will be in touch if further information is required.
+        
+        Referral Details:
+        - Referrer Name: John Smith
+        - Employee Name: Jane Doe
+        - Department: Finance
+        - Reason for Referral: Long-term sickness absence
+        - Preferred Appointment Method: Video call
+        
+        You will receive an update once the referral has been reviewed and the appointment is scheduled.
+        
+        If you have any questions or need to make changes to the referral, please contact the Occupational Health team at ohsupport@example.com quoting the reference number REF-001245.
+        
+        Thank you,  
+        Occupational Health Services  
+        Example Ltd
+        """
         self.send_email(subject, body, self.reciever)
 
     def send_email(self, subject:str, body:str, to_email:str):
