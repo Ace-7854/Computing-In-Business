@@ -39,10 +39,12 @@ def main():
 
     oracle_database = database_manager(get_conn_string())
     table_check(oracle_database)
-    email_sender = email_manager(get_reciever())
+    # email_sender = email_manager(get_reciever())
     # email_sender.get_hr_conf()
 
-    oracle_database.insert_rec()
+    items = [["HR","HRBAE@gmail.com"],["Finance", "FinBAE@gmail.com"],["Security", "SecBAE@gmail.com"],["IT", "ITBAE@gmail.com"],["Engineering", "EngBAE@gmail.com"],["Maintenance", "MaiBAE@gmail.com"],["Admin", "AdmBAE@gmail.com"]]
+    for item in items:
+        oracle_database.insert_new_department(1, item[0], item[1])
 
     oracle_database.close_connection()
     

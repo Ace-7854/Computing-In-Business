@@ -59,6 +59,7 @@ CREATE TABLE Referral_tbl(
     User_notes VARCHAR2(50),
     hr_notes VARCHAR2(50),
     confidential INTEGER,
+    expense VARCHAR2(50),
     PRIMARY KEY (ReferralID),
     FOREIGN KEY (UserID) REFERENCES User_tbl(UserID),
     FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
@@ -126,20 +127,6 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    def insert_rec(self, table, values):
-        query = self.__create_insertion_query(table, values)
-        print("Executing query:", query)
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(query)
-            self.__conn.commit()  # Committing the insert
-            print("✅ Record inserted successfully.")
-        except Exception as e:
-            print(f"❌ Error in INSERT: {e}")
-            self.__conn.rollback()  # Rollback if error occurs
-        finally:
-            cursor.close()
-
     def create_table(self, table):
         ddl_create = f"CREATE TABLE {table.table_name} ("
 
@@ -160,149 +147,69 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    def __create_insertion_query(self, table, values):
-        query = f"INSERT INTO {table.table_name} ("
-
-        # Get the keys as a list to identify the last key
-        fields = list(table.fields.keys())
-
-        for i, key in enumerate(fields):
-            if i == len(fields) - 1:
-                # Last field - no comma
-                query += table.fields[key] + ")"
-            else:
-                # Add a comma after each field except the last
-                query += table.fields[key] + ", "
-
-        query = query + " VALUES ("
-
-        for i in range(len(values)):
-            if i == len(values) - 1:
-                # Check if value is a string, and handle accordingly
-                if isinstance(values[i], str):
-                    query += f"'{values[i]}')"
-                else:
-                    query += str(values[i]) + ")"
-            else:
-                if isinstance(values[i], str):
-                    query += f"'{values[i]}', "
-                else:
-                    query += str(values[i]) + ", "
-
-        return query
-
     def close_connection(self):
         # Manually close the connection when done
         if self.__conn:
             self.__conn.close()
             print("❌ Database connection closed.")
 
-    def create_lnk_tbl(self, name, fields):
-        query = self.__create_lnk_tbl_query(name, fields)
-        cursor = self.__conn.cursor()
 
-        try:
-            cursor.execute(query)
-            print(f"✅ Link table created successfully")
-        except Exception as e:
-            print(f"❌ Error failed to create link table")
-        finally:
-            cursor.close()
-    
-    def __create_lnk_tbl_query(self, name, fields):
-        query = f"CREATE TABLE {name} (\n"
-        pk_assign = "PRIMARY KEY ("
-        fk_constraints = []
-
-        for i, (field, ref_table) in enumerate(fields.items()):
-            query += f"    {field} INTEGER,\n"
-            pk_assign += f"{field}, " if i < len(fields) - 1 else f"{field})"
-
-            fk_constraints.append(f"    FOREIGN KEY ({field}) REFERENCES {ref_table}({field})")
-
-            query += f"    {pk_assign},\n"
-            query += ",\n".join(fk_constraints) + "\n);"
-
-            return query
-
-    def get_all_tables(self):
-        query = """
-        SELECT table_name FROM user_tables
-        """
-        cursor = self.__conn.cursor()
-        tables = []
-        try:
-            cursor.execute(query)
-            tables = [row[0] for row in cursor.fetchall()]  # Get table names
-        except Exception as e:
-            print(f"❌ Error retrieving tables: {e}")
-        finally:
-            cursor.close()
-        return tables
-
-    def get_table_fields(self, table_name):
-        query = f"""
-        SELECT column_name, data_type 
-        FROM user_tab_columns 
-        WHERE table_name = UPPER('{table_name}')
-        """
-        cursor = self.__conn.cursor()
-        fields = {}
-        try:
-            cursor.execute(query)
-            for column, dtype in cursor.fetchall():
-                fields[column.lower()] = column  # Store as {python_field: sql_field}
-        except Exception as e:
-            print(f"❌ Error retrieving fields for {table_name}: {e}")
-        finally:
-            cursor.close()
-        return fields
-
-    def drop_tbl(self, table_name:str):
-        query = f"DROP TABLE {table_name}"
+    def insert_new_user(self, userid, full_name, email, password, departmentid):
+        query = f""" 
+        INSERT INTO user_tbl(userid, full_name, email, password, departmentid) 
+        VALUES ({userid}, {full_name}, {email}, {password}, {departmentid})"""
+        
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
             self.__conn.commit()
-            print(f"✅ Successfully dropped {table_name}")
+            print("✅ New User Made successfully")
         except Exception as e:
-            print(f"❌ Error dropping table {table_name}: {e}")
+            self.__conn.rollback()
+            print(f"❌ New user failed:\nquery: {query}\nError: {e}")
+        finally:
+            cursor.close()            
+
+    def insert_new_department(self, deptid:int, dept_name:str, dept_email:str):
+        query = f""" INSERT INTO department_tbl(departmentid, department_name, department_email) VALUES ({deptid}, {dept_name}, {dept_email})"""
+
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print("✅ New department made successfully")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ New department failed:\nquery: {query}\nError: {e}")
         finally:
             cursor.close()
-    
-    def update_record(self, tbl, update_flds, values, condition_field, cond_val):
-        query = f"UPDATE {tbl.table_name} SET "
 
-        if len(update_flds) > len(values):
-            raise "More fields than values found"
-        elif len(update_flds) < len(values): 
-            raise "More values than fields found"
-        else: 
-            for i in range(len(update_flds)):
-                query += f"{update_flds[i]} = {values[i]},"
-            
-            query = query.rstrip(',') + f"WHERE {condition_field} = {cond_val};"
+    def insert_new_referral(self, referralid:int, userid:int, departmentid:int, ref_sub:str, user_notes:str, hr_notes:str, confidential:int, expense:str):
+        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid,referral_subject, user_notes, hr_notes, confidential) VALUES ({referralid},{userid},{departmentid},{ref_sub},{user_notes}, {hr_notes}, {confidential}, {expense})"""
 
-            cursor = self.__conn.cursor()
-            try:
-                cursor.execute()
-                self.__conn.commit()
-                print(f"✅Record successfully updated using values: {values}")
-            except Exception as e: 
-                print(f"❌Failed to update record successfully: {e}")
-            finally: 
-                cursor.close()
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print("✅ New department made successfully")
+        except Exception as e:
+            self.__conn.rollback()
+            print(f"❌ New department failed:\nquery: {query}\nError: {e}")
+        finally:
+            cursor.close()
 
-        
-#already made tables
-class table:
-    def __init__(self, table, **kwargs):
-        self.table_name = table 
-        ## making a dictionary based on input fields
-        self.fields = dict(kwargs)
-
-#a new table un-made, provides a way of setting up constraints and making the table itself in python
-class new_table:
-    def __init__(self, tbl_name, **kwargs):
-        self.table_name = tbl_name
-        self.fields = dict(kwargs)
+    """
+CREATE TABLE Referral_tbl(
+    ReferralID INTEGER,
+    UserID INTEGER,
+    DepartmentID INTEGER,
+    Referral_subject VARCHAR2(100),
+    User_notes VARCHAR2(50),
+    hr_notes VARCHAR2(50),
+    confidential INTEGER,
+    expense VARCHAR2(50)
+    PRIMARY KEY (ReferralID),
+    FOREIGN KEY (UserID) REFERENCES User_tbl(UserID),
+    FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+)
+"""
