@@ -23,14 +23,14 @@ def table_check(oracle_database:database_manager):
             dept_tbl = True
     
     if not dept_tbl:
-        oracle_database.create_user()
-    if not referral_tbl:
         oracle_database.create_department()
-    if not user_tbl:
+    if not referral_tbl:
         oracle_database.create_referral()
+    if not user_tbl:
+        oracle_database.create_user()
 
     for tbl in tbls:
-        if tbl.lower() != "departmentemail_tbl" and tbl.lower() != "user_tbl" and tbl.lower() != "department_tbl":
+        if tbl.lower() != "referral_tbl" and tbl.lower() != "user_tbl" and tbl.lower() != "department_tbl":
             oracle_database.drop_tbl(tbl)
 
 def main():
@@ -40,7 +40,7 @@ def main():
     oracle_database = database_manager(get_conn_string())
     table_check(oracle_database)
     email_sender = email_manager(get_reciever())
-    email_sender.get_hr_conf()
+    # email_sender.get_hr_conf()
 
     oracle_database.close_connection()
     

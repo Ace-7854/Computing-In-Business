@@ -10,8 +10,8 @@ class database_manager:
         query = """
 CREATE TABLE Department_tbl(
     DepartmentID INTEGER,
-    Department_name VARCHAR(50),
-    Department_email VARCHAR(50),
+    Department_name VARCHAR2(50),
+    Department_email VARCHAR2(50),
     PRIMARY KEY(DepartmentID)
 )
 """
@@ -30,12 +30,12 @@ CREATE TABLE Department_tbl(
         query = """
 CREATE TABLE User_tbl(
     UserID INTEGER,
-    full_name VARCHAR(50),
-    email VARCHAR(50),
-    password VARCHAR(50),
+    full_name VARCHAR2(50),
+    email VARCHAR2(50),
+    password VARCHAR2(50),
     DepartmentID INTEGER,
     PRIMARY KEY (UserID),
-    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+    FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
 )
 """
         cursor = self.__conn.cursor()
@@ -55,13 +55,13 @@ CREATE TABLE Referral_tbl(
     ReferralID INTEGER,
     UserID INTEGER,
     DepartmentID INTEGER,
-    Referral_subject INTEGER,
-    User_notes VARCHAR(50),
-    hr_notes VARCHAR(50),
+    Referral_subject VARCHAR2(100),
+    User_notes VARCHAR2(50),
+    hr_notes VARCHAR2(50),
     confidential INTEGER,
     PRIMARY KEY (ReferralID),
-    FORIEGN KEY (UserID) REFERENCES User_tbl(UserID),
-    FORIEGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
+    FOREIGN KEY (UserID) REFERENCES User_tbl(UserID),
+    FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
 )
 """
         cursor = self.__conn.cursor()
