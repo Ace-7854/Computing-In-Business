@@ -2,6 +2,8 @@ from csv_module import cls_csv
 from database_module import database_manager
 from env_module import get_conn_string, get_csv_file_path, get_reciever
 from email_module import email_manager
+import random
+
 
 def display_all_items(records):
     for record in records:
@@ -41,6 +43,8 @@ def main():
     table_check(oracle_database)
     # email_sender = email_manager(get_reciever())
     # email_sender.get_hr_conf()
+
+    print(oracle_database.get_user_by_email("SmitHa.FinBAE@gmail.com"))
 
     oracle_database.close_connection()
 

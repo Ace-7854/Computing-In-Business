@@ -127,26 +127,6 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    def create_table(self, table):
-        ddl_create = f"CREATE TABLE {table.table_name} ("
-
-        for field, field_type in table.fields.items():
-            ddl_create += f"{field} {field_type}, "
-    
-        # Remove last comma and add closing parenthesis
-        ddl_create = ddl_create.rstrip(', ') + ")"
-        #print(ddl_create)
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(ddl_create)
-            self.__conn.commit()
-            print("✅ Table created successfully")
-        except Exception as e:
-            print(f"❌ Error in DDL table creation: {e}")
-            self.__conn.rollback()
-        finally:
-            cursor.close()
-
     def close_connection(self):
         # Manually close the connection when done
         if self.__conn:
@@ -212,3 +192,31 @@ CREATE TABLE Referral_tbl(
             finally:
                 cursor.close()
             return tables
+    
+    def get_user_by_email(self, email):
+        query = f"SELECT * FROM user_tbl WHERE email = '{email}'"
+
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            row = cursor.fetchone()
+
+            if row:
+                userid, full_name, email, password, departmentid = row
+                print(f"UserID: {userid}, DepartmentID: {departmentid}, Name: {full_name}, Email: {email}, Password: {password}")
+
+                diction = {
+                    'id': userid,
+                    'dept_id' : departmentid,
+                    'name': full_name,
+                    'email': email,
+                    'pass': password
+                }
+                return diction
+            else:
+                print("No user found with that email.")
+
+        except Exception as e:
+            print(f"❌No user could be retrieved: {e}")
+        finally:
+            cursor.close()    
