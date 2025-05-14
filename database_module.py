@@ -157,7 +157,7 @@ CREATE TABLE Referral_tbl(
     def insert_new_user(self, userid, full_name, email, password, departmentid):
         query = f""" 
         INSERT INTO user_tbl(userid, full_name, email, password, departmentid) 
-        VALUES ({userid}, {full_name}, {email}, {password}, {departmentid})"""
+        VALUES ({userid}, '{full_name}', '{email}', '{password}', {departmentid})"""
         
         cursor = self.__conn.cursor()
         try:
@@ -171,7 +171,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()            
 
     def insert_new_department(self, deptid:int, dept_name:str, dept_email:str):
-        query = f""" INSERT INTO department_tbl(departmentid, department_name, department_email) VALUES ({deptid}, {dept_name}, {dept_email})"""
+        query = f""" INSERT INTO department_tbl(departmentid, department_name, department_email) VALUES ({deptid}, '{dept_name}', '{dept_email}')"""
 
         cursor = self.__conn.cursor()
         try:
@@ -185,7 +185,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()
 
     def insert_new_referral(self, referralid:int, userid:int, departmentid:int, ref_sub:str, user_notes:str, hr_notes:str, confidential:int, expense:str):
-        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid,referral_subject, user_notes, hr_notes, confidential) VALUES ({referralid},{userid},{departmentid},{ref_sub},{user_notes}, {hr_notes}, {confidential}, {expense})"""
+        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid,referral_subject, user_notes, hr_notes, confidential) VALUES ({referralid},{userid},{departmentid},'{ref_sub}','{user_notes}', '{hr_notes}', '{confidential}', '{expense}')"""
 
         cursor = self.__conn.cursor()
         try:
@@ -198,18 +198,17 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    """
-CREATE TABLE Referral_tbl(
-    ReferralID INTEGER,
-    UserID INTEGER,
-    DepartmentID INTEGER,
-    Referral_subject VARCHAR2(100),
-    User_notes VARCHAR2(50),
-    hr_notes VARCHAR2(50),
-    confidential INTEGER,
-    expense VARCHAR2(50)
-    PRIMARY KEY (ReferralID),
-    FOREIGN KEY (UserID) REFERENCES User_tbl(UserID),
-    FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
-)
-"""
+    def get_all_tables(self):
+            query = """
+            SELECT table_name FROM user_tables
+            """
+            cursor = self.__conn.cursor()
+            tables = []
+            try:
+                cursor.execute(query)
+                tables = [row[0] for row in cursor.fetchall()]  # Get table names
+            except Exception as e:
+                print(f"❌ Error retrieving tables: {e}")
+            finally:
+                cursor.close()
+            return tables
