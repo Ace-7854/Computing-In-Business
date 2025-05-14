@@ -42,6 +42,8 @@ def main():
     email_sender = email_manager(get_reciever())
     # email_sender.get_hr_conf()
 
+    oracle_database.insert_rec()
+
     oracle_database.close_connection()
     
 """
