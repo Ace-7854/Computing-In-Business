@@ -6,7 +6,7 @@ class database_manager:
         self.__conn = oracledb.connect(conn_str)
         print("✅ Database connection established.")
 
-    def create_department(self):
+    def create_department(self): #creates department table
         query = """
 CREATE TABLE Department_tbl(
     DepartmentID INTEGER,
@@ -26,7 +26,7 @@ CREATE TABLE Department_tbl(
         finally:
             cursor.close()
 
-    def create_user(self):
+    def create_user(self): # User table
         query = """
 CREATE TABLE User_tbl(
     UserID INTEGER,
@@ -49,7 +49,7 @@ CREATE TABLE User_tbl(
         finally:
             cursor.close()
 
-    def create_referral(self):
+    def create_referral(self): #creates a referral table
         query = """
 CREATE TABLE Referral_tbl(
     ReferralID INTEGER,
@@ -90,7 +90,7 @@ CREATE TABLE Referral_tbl(
             return lst_of_rec
 
     def get_record(self, table, field, cond):
-        query = f"SELECT * FROM {table} WHERE {field} = '{cond}'"
+        query = f"SELECT * FROM {table} WHERE {field} = '{cond}'" #grabs a specific record based on a field and a criteria
         cursor = self.__conn.cursor()
         temp = ""
         try:
@@ -115,7 +115,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()
     
     def empty_data(self, table):
-        query = f"DELETE FROM {table.table_name}"
+        query = f"DELETE FROM {table}"
         cursor = self.__conn.cursor()
 
         try:
@@ -180,8 +180,9 @@ CREATE TABLE Referral_tbl(
 
     def get_all_tables(self):
             query = """
-            SELECT table_name FROM user_tables
+            SELECT table_name FROM user_tables 
             """
+            #gets all tables from the oraacle database that user can access
             cursor = self.__conn.cursor()
             tables = []
             try:
@@ -205,7 +206,7 @@ CREATE TABLE Referral_tbl(
                 userid, full_name, email, password, departmentid = row
                 print(f"UserID: {userid}, DepartmentID: {departmentid}, Name: {full_name}, Email: {email}, Password: {password}")
 
-                diction = {
+                diction = { #a dictionary based on user data
                     'id': userid,
                     'dept_id' : departmentid,
                     'name': full_name,
@@ -222,7 +223,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()    
 
     def drop_tbl(self, table_name):
-        query = f"DROP TABLE {table_name}"
+        query = f"DROP TABLE {table_name}" #Drops a table, done for testing and errors in tables during trial phases
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
@@ -234,7 +235,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()
 
     def get_referral_by_user(self, userid):
-        query = f"SELECT * FROM referral_tbl WHERE userid = {userid}"
+        query = f"SELECT * FROM referral_tbl WHERE userid = {userid}" #gets the referral details via the userid 
 
         cursor = self.__conn.cursor()
         try:
