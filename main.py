@@ -44,7 +44,7 @@ def main():
     # email_sender = email_manager(get_reciever())
     # email_sender.get_hr_conf()
 
-    print(oracle_database.get_user_by_email("SmitHa.FinBAE@gmail.com"))
+    print(oracle_database.get_referral_by_user(101))
 
     oracle_database.close_connection()
 

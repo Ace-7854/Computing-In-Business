@@ -165,16 +165,16 @@ CREATE TABLE Referral_tbl(
             cursor.close()
 
     def insert_new_referral(self, referralid:int, userid:int, departmentid:int, ref_sub:str, user_notes:str, hr_notes:str, confidential:int, expense:str):
-        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid,referral_subject, user_notes, hr_notes, confidential) VALUES ({referralid},{userid},{departmentid},'{ref_sub}','{user_notes}', '{hr_notes}', '{confidential}', '{expense}')"""
+        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid, referral_subject, user_notes, hr_notes, confidential, expense) VALUES ({referralid}, {userid}, {departmentid}, '{ref_sub}', '{user_notes}', '{hr_notes}', {confidential}, '{expense}')"""
 
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
             self.__conn.commit()
-            print("✅ New department made successfully")
+            print("✅ New referral made successfully")
         except Exception as e:
             self.__conn.rollback()
-            print(f"❌ New department failed:\nquery: {query}\nError: {e}")
+            print(f"❌ New referral failed:\nquery: {query}\nError: {e}")
         finally:
             cursor.close()
 
@@ -220,3 +220,43 @@ CREATE TABLE Referral_tbl(
             print(f"❌No user could be retrieved: {e}")
         finally:
             cursor.close()    
+
+    def drop_tbl(self, table_name):
+        query = f"DROP TABLE {table_name}"
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print(f"✅ Successfully dropped {table_name}")
+        except Exception as e:
+            print(f"❌ Error dropping table {table_name}: {e}")
+        finally:
+            cursor.close()
+
+    def get_referral_by_user(self, userid):
+        query = f"SELECT * FROM referral_tbl WHERE userid = {userid}"
+
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            row = cursor.fetchone()
+
+            if row:
+                referralid, user_id, departmentid, ref_subject, usr_notes, hr_notes, confidential, expense = row
+
+                diction = {
+                    'ref':referralid,
+                    'userid' : user_id,
+                    'departmentid' : departmentid,
+                    'ref_sub' : ref_subject,
+                    'user_notes' : usr_notes, 
+                    'hr_notes' : hr_notes,
+                    'confidential' : confidential,
+                    'expense' : expense
+                }
+
+                return diction
+        except Exception as e:
+            print(f"Could not get record, or no records found: {e}")
+        finally: 
+            cursor.close()
