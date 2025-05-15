@@ -2,36 +2,20 @@
 {% block content %}
 <title>User dashboard</title>
 <section class="page-section text-center">
-    <h2>Welcome, {{ user }}</h2>
+    <h2>Welcome, {{ user['name'] }}</h2>
     <div class="container" style="padding-top: 30px;">
         <div class="row align-items-center justify-content-center">
             <h3 style="text-align: center;">Your referrals</h3>
-            <div class="card" style="width: 18rem; margin: 10px;">
-                <h5 class="card-title">Referral ID<h5>
-                <div class="card-content text-dark" style="color: white; padding-bottom: 7px;">
-                    <p class="card-text">Employee ID</p>
-                    <p class="card-text">Employee department</p>
-                    <p class="card-text">Referral title</p>
-                    <p class="card-text">Notes</p>
-                 </div>
+            {% for referral in referrals %}
+            <div class="card" style="width: 18rem; margin: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); background-color: #fff;">
+                <p><strong>Ref_id:</strong> {{ referral.ref }}</p>
+                <p><strong>Subject:</strong> {{ referral.ref_sub }}</p>
+                <p><strong>Notes:</strong> {{ referral.user_notes }}</p>
+                <p><strong>HR Notes:</strong> {{ referral.hr_notes }}</p>
+                <p><strong>Confidential:</strong> {{ referral.confidential }}</p>
+                <p><strong>Expense:</strong> {{ referral.expense }}</p>
             </div>
-            <div class="card" style="width: 18rem; margin: 10px;">
-                <h5 class="card-title">Referral ID<h5>
-                <div class="card-content text-dark" style="color: white; padding-bottom: 7px;">
-                    <p class="card-text">Employee ID</p>
-                    <p class="card-text">Employee department</p>
-                    <p class="card-text">Referral title</p>
-                    <p class="card-text">Notes</p>
-                 </div>
-            </div>
-            <div class="card" style="width: 18rem; margin: 10px;">
-                <h5 class="card-title">Referral ID<h5>
-                <div class="card-content text-dark" style="color: white; padding-bottom: 7px;">
-                    <p class="card-text">Employee ID</p>
-                    <p class="card-text">Employee department</p>
-                    <p class="card-text">Referral title</p>
-                    <p class="card-text">Notes</p>
-                 </div>
+            {% endfor %}
             </div>
         </div>
     </div>

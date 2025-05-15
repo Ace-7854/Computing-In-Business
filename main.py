@@ -43,8 +43,7 @@ def main():
     table_check(oracle_database)
     # email_sender = email_manager(get_reciever())
     # email_sender.get_hr_conf()
-
-    print(oracle_database.get_referral_by_user(101))
+    # print(oracle_database.get_referral_by_user(101))
 
     oracle_database.close_connection()
 

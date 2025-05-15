@@ -1,4 +1,6 @@
 import re
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 def sanitize_input(user_input: str) -> str:
     """
@@ -19,3 +21,12 @@ def sanitize_input(user_input: str) -> str:
         cleaned = pattern.sub("", cleaned)
 
     return cleaned.strip()
+
+def hash_alg(pwrd):
+    # Hash a password (store this in the database)
+    hashed_pw = generate_password_hash(pwrd)
+    print(hashed_pw)  # e.g., pbkdf2:sha256:260000$...
+
+def check_pass(password, entered_pass):
+    # Check password during login
+    return check_password_hash(password, entered_pass)  # returns True

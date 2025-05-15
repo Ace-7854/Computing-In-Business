@@ -234,30 +234,37 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    def get_referral_by_user(self, userid):
-        query = f"SELECT * FROM referral_tbl WHERE userid = {userid}" #gets the referral details via the userid 
+    def get_all_referrals(self):
+        query = f"SELECT * FROM referral_tbl"  # gets referrals by user id
 
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
-            row = cursor.fetchone()
+            rows = cursor.fetchall()
 
-            if row:
-                referralid, user_id, departmentid, ref_subject, usr_notes, hr_notes, confidential, expense = row
+            referrals = []
 
-                diction = {
-                    'ref':referralid,
-                    'userid' : user_id,
-                    'departmentid' : departmentid,
-                    'ref_sub' : ref_subject,
-                    'user_notes' : usr_notes, 
-                    'hr_notes' : hr_notes,
-                    'confidential' : confidential,
-                    'expense' : expense
-                }
+            if rows:
+                for row in rows:
+                    # Unpack each row
+                    referralid, user_id, departmentid, ref_subject, usr_notes, hr_notes, confidential, expense = row
 
-                return diction
+                    diction = {
+                        'ref': referralid,
+                        'userid': user_id,
+                        'departmentid': departmentid,
+                        'ref_sub': ref_subject,
+                        'user_notes': usr_notes,
+                        'hr_notes': hr_notes,
+                        'confidential': confidential,
+                        'expense': expense
+                    }
+
+                    referrals.append(diction)
+
+            return referrals  # return list of referral dictionaries, empty list if none found
         except Exception as e:
-            print(f"Could not get record, or no records found: {e}")
-        finally: 
+            print(f"Could not get records, or no records found: {e}")
+            return []
+        finally:
             cursor.close()

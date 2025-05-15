@@ -12,10 +12,10 @@ class email_manager:
     def get_email_denied(self):
         pass
 
-    def get_email_submission(self):
+    def get_hr_conf(self):
         pass
 
-    def get_hr_conf(self, name, dept, ref_reason):
+    def get_email_submission(self, name, dept, ref_reason):
         subject = """Referral Submission Confirmation – Occupational Health"""
         
         body = f"""\
