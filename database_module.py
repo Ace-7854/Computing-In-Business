@@ -127,26 +127,6 @@ CREATE TABLE Referral_tbl(
         finally:
             cursor.close()
 
-    def create_table(self, table):
-        ddl_create = f"CREATE TABLE {table.table_name} ("
-
-        for field, field_type in table.fields.items():
-            ddl_create += f"{field} {field_type}, "
-    
-        # Remove last comma and add closing parenthesis
-        ddl_create = ddl_create.rstrip(', ') + ")"
-        #print(ddl_create)
-        cursor = self.__conn.cursor()
-        try:
-            cursor.execute(ddl_create)
-            self.__conn.commit()
-            print("✅ Table created successfully")
-        except Exception as e:
-            print(f"❌ Error in DDL table creation: {e}")
-            self.__conn.rollback()
-        finally:
-            cursor.close()
-
     def close_connection(self):
         # Manually close the connection when done
         if self.__conn:
@@ -157,7 +137,7 @@ CREATE TABLE Referral_tbl(
     def insert_new_user(self, userid, full_name, email, password, departmentid):
         query = f""" 
         INSERT INTO user_tbl(userid, full_name, email, password, departmentid) 
-        VALUES ({userid}, {full_name}, {email}, {password}, {departmentid})"""
+        VALUES ({userid}, '{full_name}', '{email}', '{password}', {departmentid})"""
         
         cursor = self.__conn.cursor()
         try:
@@ -171,7 +151,7 @@ CREATE TABLE Referral_tbl(
             cursor.close()            
 
     def insert_new_department(self, deptid:int, dept_name:str, dept_email:str):
-        query = f""" INSERT INTO department_tbl(departmentid, department_name, department_email) VALUES ({deptid}, {dept_name}, {dept_email})"""
+        query = f""" INSERT INTO department_tbl(departmentid, department_name, department_email) VALUES ({deptid}, '{dept_name}', '{dept_email}')"""
 
         cursor = self.__conn.cursor()
         try:
@@ -185,31 +165,98 @@ CREATE TABLE Referral_tbl(
             cursor.close()
 
     def insert_new_referral(self, referralid:int, userid:int, departmentid:int, ref_sub:str, user_notes:str, hr_notes:str, confidential:int, expense:str):
-        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid,referral_subject, user_notes, hr_notes, confidential) VALUES ({referralid},{userid},{departmentid},{ref_sub},{user_notes}, {hr_notes}, {confidential}, {expense})"""
+        query = f"""INSERT INTO referral_tbl(referralid, userid, departmentid, referral_subject, user_notes, hr_notes, confidential, expense) VALUES ({referralid}, {userid}, {departmentid}, '{ref_sub}', '{user_notes}', '{hr_notes}', {confidential}, '{expense}')"""
 
         cursor = self.__conn.cursor()
         try:
             cursor.execute(query)
             self.__conn.commit()
-            print("✅ New department made successfully")
+            print("✅ New referral made successfully")
         except Exception as e:
             self.__conn.rollback()
-            print(f"❌ New department failed:\nquery: {query}\nError: {e}")
+            print(f"❌ New referral failed:\nquery: {query}\nError: {e}")
         finally:
             cursor.close()
 
-    """
-CREATE TABLE Referral_tbl(
-    ReferralID INTEGER,
-    UserID INTEGER,
-    DepartmentID INTEGER,
-    Referral_subject VARCHAR2(100),
-    User_notes VARCHAR2(50),
-    hr_notes VARCHAR2(50),
-    confidential INTEGER,
-    expense VARCHAR2(50)
-    PRIMARY KEY (ReferralID),
-    FOREIGN KEY (UserID) REFERENCES User_tbl(UserID),
-    FOREIGN KEY (DepartmentID) REFERENCES Department_tbl(DepartmentID)
-)
-"""
+    def get_all_tables(self):
+            query = """
+            SELECT table_name FROM user_tables
+            """
+            cursor = self.__conn.cursor()
+            tables = []
+            try:
+                cursor.execute(query)
+                tables = [row[0] for row in cursor.fetchall()]  # Get table names
+            except Exception as e:
+                print(f"❌ Error retrieving tables: {e}")
+            finally:
+                cursor.close()
+            return tables
+    
+    def get_user_by_email(self, email):
+        query = f"SELECT * FROM user_tbl WHERE email = '{email}'"
+
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            row = cursor.fetchone()
+
+            if row:
+                userid, full_name, email, password, departmentid = row
+                print(f"UserID: {userid}, DepartmentID: {departmentid}, Name: {full_name}, Email: {email}, Password: {password}")
+
+                diction = {
+                    'id': userid,
+                    'dept_id' : departmentid,
+                    'name': full_name,
+                    'email': email,
+                    'pass': password
+                }
+                return diction
+            else:
+                print("No user found with that email.")
+
+        except Exception as e:
+            print(f"❌No user could be retrieved: {e}")
+        finally:
+            cursor.close()    
+
+    def drop_tbl(self, table_name):
+        query = f"DROP TABLE {table_name}"
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            self.__conn.commit()
+            print(f"✅ Successfully dropped {table_name}")
+        except Exception as e:
+            print(f"❌ Error dropping table {table_name}: {e}")
+        finally:
+            cursor.close()
+
+    def get_referral_by_user(self, userid):
+        query = f"SELECT * FROM referral_tbl WHERE userid = {userid}"
+
+        cursor = self.__conn.cursor()
+        try:
+            cursor.execute(query)
+            row = cursor.fetchone()
+
+            if row:
+                referralid, user_id, departmentid, ref_subject, usr_notes, hr_notes, confidential, expense = row
+
+                diction = {
+                    'ref':referralid,
+                    'userid' : user_id,
+                    'departmentid' : departmentid,
+                    'ref_sub' : ref_subject,
+                    'user_notes' : usr_notes, 
+                    'hr_notes' : hr_notes,
+                    'confidential' : confidential,
+                    'expense' : expense
+                }
+
+                return diction
+        except Exception as e:
+            print(f"Could not get record, or no records found: {e}")
+        finally: 
+            cursor.close()
