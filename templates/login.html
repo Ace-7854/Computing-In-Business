@@ -1,17 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>BAE systems login</title>
-     <link rel="stylesheet" href="/static/log_in_style.css">
-</head>
-<body>
-    <h2>Login</h2>
-    <div class="LGD">
-    <form method="POST">
-        <label>Username:</label><input name="username"><br>
-        <label>Password:</label><input name="password" type="password"><br>
-        <button type="submit">Login</button>
-    </form>
-    </div>
-</body>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light text-uppercase fixed-top" id="mainNav" style="padding-bottom: 10px;">
+            <div class="container">
+                <a class="navbar-brand text-dark" href="#page-top">OHRS</a>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded text-dark" href="{{url_for('logout')}}">About</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded text-dark" href="{{url_for('logout')}}">Help</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded text-dark" href="{{url_for('logout')}}">Accessibility</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="page-section">
+            <div class="container" style="padding-top: 30px; text-align: center;">
+                <h1>Login</h1>
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-8 mb-5 mb-lg-0">
+                        <form method="POST">
+                            <div class="form-group mb-3" style="border-radius: 15px;">
+                                <label for="username"><strong>Username:</strong></label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username"/>
+                            </div>
+                            <div class="form-group mb-3" style="border-radius: 15px;">
+                                <label for="password"><strong>Password:</strong></label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
+                            </div>
+                            <br>
+                            <center>
+                                <button type="submit" class="btn btn-danger">Login</button>
+                            </center>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+    <footer class="footer text-center">
+        <p>Copyright©   |   Terms and conditions    |   Privacy policy</p>
+    </footer>
 </html>

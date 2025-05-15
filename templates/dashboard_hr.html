@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>HR Dashboard</title>
-    <link rel="stylesheet" href="/static/hr_dash.css">
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+<title>HR dashboard</title>
+<section class="page-section text-center">
     <h2>Welcome, {{ user }}</h2>
-    <p>Referral Progress: {{ complete }} out of {{ total }}</p>
-
-    <p><strong>This is the HR page</strong></p>
-
-    <a href="{{ url_for('logout') }}">Logout</a>
-</body>
-</html>
+    <div class="container" style="padding-top: 30px;">
+        <div class="row align-items-center justify-content-center">
+            <h3 style="text-align: center;">Your referrals</h3>
+            {% for index,value in referrals %}
+                <div class="card" style="width: 18rem; margin: 10px;">
+                    <h5 class="card-title">Referral ID<h5>
+                    <div class="card-content text-dark" style="color: white; padding-bottom: 7px;">
+                        <p class="card-text">Employee ID</p>
+                        <p class="card-text">Employee department</p>
+                        <p class="card-text">Referral title</p>
+                        <p class="card-text">Notes</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
